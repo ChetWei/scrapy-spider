@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 
 # Scrapy settings for ArticleSpider project
 #
@@ -64,9 +65,26 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'ArticleSpider.pipelines.ArticlespiderPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   #'ArticleSpider.pipelines.JsonWithEncodingPipeline': 2,
+    #配置下载中间 件,数值是处理顺序，越小优先
+   # 'scrapy.pipelines.images.ImagesPipeline': 1 ,  默认自带的pipline
+   # 'ArticleSpider.pipelines.ArticleImagePipeline': 1,
+    #'ArticleSpider.pipelines.JsonExporterPipeline':3,
+
+    'ArticleSpider.pipelines.MysqlTwistedPipeline':1,
+}
+
+IMAGES_URLS_FIELD = "front_image_url"  #item中图片的地址
+
+project_dir = os.path.abspath(os.path.dirname(__file__)) #当前目录名称,的绝对路径
+IMAGES_STORE = os.path.join(project_dir,'images')   #图片的保存路径，设置工程路径，相对路径
+
+#设置下张图片的过滤
+# IMAGES_MIN_HEIGHT = 100
+# IMAGES_MIN_WIDTH = 100
+
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -88,3 +106,9 @@ ROBOTSTXT_OBEY = False
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+
+MYSQL_HOST = "127.0.0.1"
+MYSQL_DBNAME = "article_spider"
+MYSQL_USER = "root"
+MYSQL_PASSWORD = "110811"
