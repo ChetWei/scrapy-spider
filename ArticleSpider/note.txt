@@ -1,0 +1,29 @@
+scrapy爬虫基础知识
+
+正则表达式
+url去重
+
+
+爬虫去重策略
+
+	1.将访问过的url保存道数据库	#效率低
+	2.将访问过的url保存到set内存中，只要O（1）时间复杂度就能查询 #数据量大时不可行
+	3.url经过md5等方法哈希后保存到set中  #节省内存
+	4.用bitmap方法，将访问过的url通过hash函数映射到某一位，解决冲突
+	5.bloomfilter方法对bitmap进行改进，多重hash函数降低冲突
+	
+	
+http://blog.jobbole.com/all-posts/
+http://blog.jobbole.com/all-posts/page/2/
+
+创建项目
+(scrapyEnv) F:\pythonProject>scrapy startproject ArticleSpider  
+进入项目，创建spider 
+(scrapyEnv) F:\pythonProject\ArticleSpider>scrapy genspider jobbole blog.jobbole.com
+启动项目
+(scrapyEnv) F:\pythonProject\ArticleSpider>scrapy crawl jobbole
+
+
+xpath 提取html内容
+
+
