@@ -69,10 +69,10 @@ ITEM_PIPELINES = {
    #'ArticleSpider.pipelines.JsonWithEncodingPipeline': 2,
     #配置下载中间 件,数值是处理顺序，越小优先
    # 'scrapy.pipelines.images.ImagesPipeline': 1 ,  默认自带的pipline
-   # 'ArticleSpider.pipelines.ArticleImagePipeline': 1,
+    'ArticleSpider.pipelines.ArticleImagePipeline': 1,
     #'ArticleSpider.pipelines.JsonExporterPipeline':3,
 
-    'ArticleSpider.pipelines.MysqlTwistedPipeline':1,
+    'ArticleSpider.pipelines.MysqlTwistedPipeline':2,
 }
 
 IMAGES_URLS_FIELD = "front_image_url"  #item中图片的地址

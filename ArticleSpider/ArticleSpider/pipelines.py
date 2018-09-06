@@ -72,21 +72,6 @@ class ArticleImagePipeline(ImagesPipeline):
             return item
 
 
-"""使用自定义的插入数据库方式，同步操作"""
-class MysqlPipeline(object):
-
-    def __init__(self):
-        self.conn = MySQLdb.connect('127.0.0.1','root','110811','article_spider',charset="utf8",use_unicode=True)
-        self.cursor = self.conn.cursor()
-
-    def process_item(self, item, spider):
-        insert_sql = """
-            insert into jobbole_article(title,url,create_date,fav_nums)
-            values (%s,%s,%s,%s)
-        """
-        self.cursor.execute(insert_sql,(item["title"],item["url"],item["create_date"],item["fav_nums"]))
-        self.conn.commit()
-
 
 """Mysql连接池，异步"""
 class MysqlTwistedPipeline(object):
@@ -131,15 +116,19 @@ class MysqlTwistedPipeline(object):
                        VALUES (%s, %s, %s, %s,%s,%s,%s,%s,%s,%s,%s)
                        """
 
-        front_image_url = ""
-        if item["front_image_url"] :
-            front_image_url = item["front_image_url"][0]
+
+        try:
+            if item["front_image_url"] :
+                front_image_url = item["front_image_url"][0]
+            else:
+                front_image_url = ""
+        except Exception as e:
+            front_image_url = ""
 
         cursor.execute(insert_sql, ( item['title'], item["create_date"],item['url'], item['url_object_id'],
                                      front_image_url,item["front_image_path"],item["comment_nums"],
                                      item["fav_nums"],item["praise_nums"],item["tags"],item["content"]
                                      ))
-
 
 
 

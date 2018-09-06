@@ -23,12 +23,15 @@ def add_jobbole(value):
 
 
 def date_convert(value):
+
+    create_date = value.strip().replace('·','').strip()
+    #字符串转换日期
     try:
-        create_date = value.strip().replace('·','').strip()
-        create_date = datetime.strptime(value,"%Y/%m/%d").date()
-    except Exception as e:
+        create_date = datetime.strptime(create_date,"%Y/%m/%d").date()
+    except Exception as e :
         create_date = datetime.now().date()
 
+    return create_date
 
 def get_nums(value):
     match_re = re.match(r".*?(\d+).*",value)
@@ -69,8 +72,9 @@ class JobBoleArticleItem(scrapy.Item):
     )
     url = scrapy.Field()
     url_object_id = scrapy.Field()
+
     front_image_url = scrapy.Field(
-        # 默认 output_processor 是 TakeFirst()，这样返回的是一个字符串，不是 list，此处必须是 list
+        # 列表经过 默认 output_processor 是 TakeFirst()，这样front_image_url一个字符串，不是 list
         output_processor=MapCompose(return_value) #img pipeline 需要的是列表数据
     )
     front_image_path = scrapy.Field()
@@ -90,8 +94,8 @@ class JobBoleArticleItem(scrapy.Item):
         output_processor = Join(",")
     )
     content = scrapy.Field(
-        # content 我们不是取最后一个，是全部都要，所以不用 TakeFirst()
-        #output_processor=Join("")
+        # content 不是取最后一个，是全部都要，所以不用 TakeFirst()
+        output_processor= Join("")
     )
 
 

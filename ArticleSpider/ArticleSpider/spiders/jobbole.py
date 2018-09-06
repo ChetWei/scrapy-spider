@@ -44,7 +44,6 @@ class JobboleSpider(scrapy.Spider):
 
         article_item = JobBoleArticleItem()
 
-
         # title =  response.xpath(r'//div[@class="entry-header"]/h1/text()').extract()[0].strip()
         # create_date = response.xpath(r'//div[@class="entry-meta"]/p[1]/text()[1]').extract()[0].strip().replace('·','').strip()
         #
@@ -97,9 +96,12 @@ class JobboleSpider(scrapy.Spider):
         # article_item["tags"] = tags
         # article_item["content"] = content
 
-        front_image_url = response.meta.get("front_image_url", "")  #文章封面图
+
+
+        front_image_url = response.meta.get("front_image_url", "")  #文章封面图的地址
         #通过itemloader加载item
         item_loader = ArticleItemLoader(item=JobBoleArticleItem(),response=response)
+
         item_loader.add_css("title",".entry-header h1::text")
         item_loader.add_css('create_date', 'p.entry-meta-hide-on-mobile::text')
         item_loader.add_value("url",response.url)
